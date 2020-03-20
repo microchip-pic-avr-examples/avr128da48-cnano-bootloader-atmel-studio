@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "AVR-Dx_App_Example", "HostApp\AVR-Dx_App_Example.cproj", "{E5742F96-D0EC-448D-8988-65A9BBD3BDEA}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "AVR-Dx_Bootloader", "Bootloader\AVR-Dx_Bootloader.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5742F96-D0EC-448D-8988-65A9BBD3BDEA}.Debug|AVR.ActiveCfg = Debug|AVR
+		{E5742F96-D0EC-448D-8988-65A9BBD3BDEA}.Debug|AVR.Build.0 = Debug|AVR
+		{E5742F96-D0EC-448D-8988-65A9BBD3BDEA}.Release|AVR.ActiveCfg = Release|AVR
+		{E5742F96-D0EC-448D-8988-65A9BBD3BDEA}.Release|AVR.Build.0 = Release|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.ActiveCfg = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
