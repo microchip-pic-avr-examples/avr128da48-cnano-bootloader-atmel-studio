@@ -43,7 +43,8 @@
     <avrtool>com.atmel.avrdbg.tool.nedbg</avrtool>
     <avrtoolserialnumber>MCHP3280011800000022</avrtoolserialnumber>
     <avrdeviceexpectedsignature>0x1E9708</avrdeviceexpectedsignature>
-    <avrtoolinterface>UPDI</avrtoolinterface>
+    <avrtoolinterface>
+    </avrtoolinterface>
     <com_atmel_avrdbg_tool_nedbg>
       <ToolOptions>
         <InterfaceProperties>
@@ -60,7 +61,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=avr128da48 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\gcc\dev\avr128da48"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=avr128da48 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\gcc\dev\avr128da48"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -76,7 +77,7 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.10\include</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -96,7 +97,7 @@
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.10\include</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\include</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
 </AvrGcc>
@@ -105,7 +106,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=avr128da48 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\gcc\dev\avr128da48"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=avr128da48 -B "%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\gcc\dev\avr128da48"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -122,7 +123,7 @@
     <ListValues>
       <Value>../../../../../../Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin</Value>
       <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.10\include</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -143,7 +144,7 @@
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.10\include</Value>
-      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.18\include</Value>
+      <Value>%24(PackRepoDir)\Atmel\AVR-Dx_DFP\1.0.27\include</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
   <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
