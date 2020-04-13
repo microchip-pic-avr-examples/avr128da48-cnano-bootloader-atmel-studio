@@ -45,7 +45,7 @@ In order to upload the application image follow this steps:
 6. Select the AVR128DA48 Curiosity Nano on-board debugger in the *Tool* section of the *AVR-Dx_Bootloader* project settings:
   - Right click on the project and click *Properties*;
   - Click *Tool* tab on the left panel, select the corresponding debugger and save the configuration (Ctrl + S)
-
+<br><img src="images/AVR-DA_Bootloader_Tool_settings.png" width="500">
 
 7. Program *AVR-Dx_Bootloader* project to the board: select *AVR-Dx_Bootloader* project and click *Start Without Debugging*:
 <br><img src="images/AVR-DA_Bootloader_program_bl.png" width="500">
