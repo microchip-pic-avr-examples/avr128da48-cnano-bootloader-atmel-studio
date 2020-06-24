@@ -94,23 +94,23 @@ __attribute__((naked)) __attribute__((section(".ctors"))) void boot(void)
 {
     /* Initialize system for AVR GCC support, expects r1 = 0 */
     asm volatile("clr r1");
-    
+
     STATUS_LED_init();
     STATUS_LED_set();
     /* Check if entering application or continuing to bootloader */
-    if(!BOOTLOADER_isRequested()) 
+    if(!BOOTLOADER_isRequested())
     {
         STATUS_LED_clear();
 
         /* Enable Boot Section Lock */
         NVMCTRL.CTRLB = NVMCTRL_BOOTRP_bm;
- 
+
         /* Jump to application, located immediately after boot section */
         pgm_jmp_far(APPCODE_START / sizeof(uint16_t));
     }
-    
-    /* Execute the bootloader code */ 
-    bootloader();     
+
+    /* Execute the bootloader code */
+    bootloader();
 }
 
 void bootloader(void)
@@ -119,48 +119,68 @@ void bootloader(void)
 
     /* Initialize communication interface */
     INTERFACE_init();
-    
+
     boot_state = READ_START_MARK;
-    
+
     while (1)
     {
-        if (boot_state < SOFTWARE_RESET)        {            /* Receive byte from communication interface */            rx_data = INTERFACE_readByte();        }                    switch(boot_state)
+        if (boot_state < SOFTWARE_RESET)
+        {
+            /* Receive byte from communication interface */
+            rx_data = INTERFACE_readByte();
+        }
+        switch(boot_state)
         {
             case READ_START_MARK:
-                current_mark <<= 8;                current_mark &= 0xFFFFFF00;                current_mark |= (rx_data & 0xFF);
+                current_mark <<= 8;
+                current_mark &= 0xFFFFFF00;
+                current_mark |= (rx_data & 0xFF);
                 if (current_mark == BOOTLOADER_START_MARK)
                 {
                     /* If "INFO" tag was received, continue with reading the app info */
                     boot_state = READ_APP_INFO;
                     image_info.start_mark = current_mark;
-                    app_ptr = (uint8_t*)(&image_info);                    app_ptr += MARK_SIZE;                    cnt = MARK_SIZE;                }
+                    app_ptr = (uint8_t*)(&image_info);
+                    app_ptr += MARK_SIZE;
+                    cnt = MARK_SIZE;
+                }
             break;
-            
+
             case READ_APP_INFO:
                 *app_ptr = rx_data;
-                app_ptr++;                cnt++;                                if (cnt == sizeof(application_code_info))                {                    /* If all the information section was received, continue with reading "STX0" tag */                    boot_state = READ_IMG_START_MARK;
+                app_ptr++;
+                cnt++;
+                if (cnt == sizeof(application_code_info))
+                {
+                    /* If all the information section was received, continue with reading "STX0" tag */
+                    boot_state = READ_IMG_START_MARK;
                     cnt = 0;
                     /* Update the start address for the application code */
-                    flash_addr = image_info.start_address;                }            break;
-            
+                    flash_addr = image_info.start_address;
+                  }
+                  break;
+
             case READ_IMG_START_MARK:
-                current_mark <<= 8;                current_mark &= 0xFFFFFF00;                current_mark |= (rx_data & 0xFF);                cnt++;
+                current_mark <<= 8;
+                current_mark &= 0xFFFFFF00;
+                current_mark |= (rx_data & 0xFF);
+                cnt++;
                 if (current_mark == BOOTLOADER_IMG_START_MARK)
                 {
                     /* If "STX0" tag was received, continue with storing the application image in the Flash */
                     boot_state = WRITE_FLASH;
                     cnt = 0;
                 }
-                else 
+                else
                 {
                     if (cnt > MARK_SIZE)
-                    {   
+                    {
                         /* Restart waiting for start mark */
                         boot_state = READ_START_MARK;
-                    }                        
-                }                    
+                    }
+                }
             break;
-            
+
             case WRITE_FLASH:
                 /* Page boundary reached, first erase */
                 if((cnt % MAPPED_PROGMEM_PAGE_SIZE) == 0x0000)
@@ -169,65 +189,65 @@ void bootloader(void)
                     while (NVMCTRL.STATUS & (NVMCTRL_EEBUSY_bm | NVMCTRL_FBUSY_bm))
                     {
                         ;
-                    }                        
+                    }
                     /* Clear the current command */
                     _PROTECTED_WRITE_SPM(NVMCTRL.CTRLA, NVMCTRL_CMD_NONE_gc);
-        
+
                     /* Erase the flash page */
                     /* Send erase command */
                     _PROTECTED_WRITE_SPM(NVMCTRL.CTRLA, NVMCTRL_CMD_FLPER_gc);
-                    
+
                     /* Dummy write to start erase operation */
                     pgm_word_write(flash_addr, 0x00);
-                    
+
                     /* Wait for completion of previous write */
                     while (NVMCTRL.STATUS & (NVMCTRL_EEBUSY_bm | NVMCTRL_FBUSY_bm))
                     {
                         ;
-                    }                        
+                    }
                     /* Clear the current command */
                     _PROTECTED_WRITE_SPM(NVMCTRL.CTRLA, NVMCTRL_CMD_NONE_gc);
-                    
+
                     STATUS_LED_toggle();
 
                     /* Enable flash Write Mode */
                     _PROTECTED_WRITE_SPM(NVMCTRL.CTRLA, NVMCTRL_CMD_FLWR_gc);
                 }
-        
+
                 if ((flash_addr & 0x01) == 0)
                 {
                     data_word = rx_data;
                 }
                 else
-                {    
+                {
                     data_word |= (rx_data << 8);
-                    
+
                     /* Program flash word with desired value */
                     pgm_word_write((flash_addr & 0xFFFFFE), data_word);
                 }
 
                 /* Increment address before writing to Flash */
                 flash_addr++;
-                
+
                 cnt++;
                 if (cnt == image_info.memory_size)
                 {
                     /* If all the image was stored, continue with Software reset */
                     boot_state = SOFTWARE_RESET;
-                }            
+                }
             break;
-            
-            case SOFTWARE_RESET: 
+
+            case SOFTWARE_RESET:
                 _delay_ms(50);
                 /* Software reset after download */
                 _PROTECTED_WRITE(RSTCTRL.SWRR, RSTCTRL_SWRST_bm);
 
             break;
-            
+
             default:
             break;
         }
-            
+
         /* Echo the received byte on the communication interface */
         INTERFACE_writeByte(rx_data);
     }
@@ -239,9 +259,10 @@ void bootloader(void)
 static void USART_init(void)
 {
     VPORTC.DIR &= ~PIN1_bm;                                 /* set pin 1 of PORT C (RXd) as input*/
-    VPORTC.DIR |= PIN0_bm;                                  /* set pin 0 of PORT C (TXd) as output*/    USART1.BAUD = (uint16_t)(USART1_BAUD_RATE(9600));       /* set the baud rate*/
+    VPORTC.DIR |= PIN0_bm;                                  /* set pin 0 of PORT C (TXd) as output*/
+    USART1.BAUD = (uint16_t)(USART1_BAUD_RATE(9600));       /* set the baud rate*/
     USART1.CTRLC = USART_CHSIZE0_bm | USART_CHSIZE1_bm;     /* set the data format to 8-bit*/
-    USART1.CTRLB |= (USART_TXEN_bm | USART_RXEN_bm);        /* enable transmitter*/ 
+    USART1.CTRLB |= (USART_TXEN_bm | USART_RXEN_bm);        /* enable transmitter*/
  }
 
 static uint8_t USART_read(void)
@@ -250,8 +271,8 @@ static uint8_t USART_read(void)
     while (!(USART1.STATUS & USART_RXCIF_bm))
     {
         ;
-    }  
-      
+    }
+
     return USART1.RXDATAL;
 }
 
@@ -260,8 +281,8 @@ static void USART_write(uint8_t byte)
     while (!(USART1.STATUS & USART_DREIF_bm))
     {
         ;
-    } 
-           
+    }
+
     /* Data will be sent when TXDATA is written */
     USART1.TXDATAL = byte;
 }
