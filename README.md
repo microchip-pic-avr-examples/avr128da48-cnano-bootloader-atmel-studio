@@ -3,11 +3,11 @@
 
 # Basic Bootloader for the AVR-DA Family (Atmel Studio)
 
-This repository contains an Atmel Solution with two projects - a basic bootloader compatible with AVR-DA family and a host application - and the flashing environment (Python™ scripts) used to upload the application image into the microcontroller's memory, as described in [*AN3341 - Basic Bootloader for the AVR MCU DA (AVR-DA) Family*](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001654) Application Note from Microchip.
+This repository contains an Atmel Solution with two projects - a basic bootloader compatible with AVR-DA family and a host application - and the flashing environment (Python™ scripts) used to upload the application image into the microcontroller's memory, as described in [*AN3341 - Basic Bootloader for the AVR MCU DA (AVR DA) Family*](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001654) Application Note from Microchip.
 
 ## Related Documentation
 More details and code examples on the AVR128DA48 can be found at the following links:
-- [AN3341 - Basic Bootloader for the AVR MCU DA (AVR-DA) Family](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001654)
+- [AN3341 - Basic Bootloader for the AVR MCU DA (AVR DA) Family](https://www.microchip.com/wwwappnotes/appnotes.aspx?appnote=en1001654)
 - [AVR128DA48 Product Page](https://www.microchip.com/wwwproducts/en/AVR128DA48)
 - [AVR128DA48 Code Examples on GitHub](https://github.com/microchip-pic-avr-examples?q=avr128da48)
 - [AVR128DA48 Project Examples in START](https://start.atmel.com/#examples/AVR128DA48CuriosityNano)
