@@ -124,47 +124,60 @@ void bootloader(void)
 
     while (1)
     {
-        if (boot_state < SOFTWARE_RESET)
-        {
-            /* Receive byte from communication interface */
-            rx_data = INTERFACE_readByte();
-        }
+        if (boot_state < SOFTWARE_RESET)
+        {
+            /* Receive byte from communication interface */
+            rx_data = INTERFACE_readByte();
+        }
+
         switch(boot_state)
         {
             case READ_START_MARK:
-                current_mark <<= 8;
-                current_mark &= 0xFFFFFF00;
-                current_mark |= (rx_data & 0xFF);
+                current_mark <<= 8;
+
+                current_mark &= 0xFFFFFF00;
+
+                current_mark |= (rx_data & 0xFF);
+
                 if (current_mark == BOOTLOADER_START_MARK)
                 {
                     /* If "INFO" tag was received, continue with reading the app info */
                     boot_state = READ_APP_INFO;
                     image_info.start_mark = current_mark;
-                    app_ptr = (uint8_t*)(&image_info);
-                    app_ptr += MARK_SIZE;
-                    cnt = MARK_SIZE;
+                    app_ptr = (uint8_t*)(&image_info);
+
+                    app_ptr += MARK_SIZE;
+
+                    cnt = MARK_SIZE;
                 }
             break;
 
             case READ_APP_INFO:
                 *app_ptr = rx_data;
-                app_ptr++;
-                cnt++;
-                if (cnt == sizeof(application_code_info))
-                {
-                    /* If all the information section was received, continue with reading "STX0" tag */
+                app_ptr++;
+
+                cnt++;
+
+                if (cnt == sizeof(application_code_info))
+                {
+                    /* If all the information section was received, continue with reading "STX0" tag */
                     boot_state = READ_IMG_START_MARK;
                     cnt = 0;
                     /* Update the start address for the application code */
-                    flash_addr = image_info.start_address;
-                  }
+                    flash_addr = image_info.start_address;
+                  }
+
                   break;
 
             case READ_IMG_START_MARK:
-                current_mark <<= 8;
-                current_mark &= 0xFFFFFF00;
-                current_mark |= (rx_data & 0xFF);
-                cnt++;
+                current_mark <<= 8;
+
+                current_mark &= 0xFFFFFF00;
+
+                current_mark |= (rx_data & 0xFF);
+
+                cnt++;
+
                 if (current_mark == BOOTLOADER_IMG_START_MARK)
                 {
                     /* If "STX0" tag was received, continue with storing the application image in the Flash */
@@ -258,11 +271,16 @@ void bootloader(void)
  */
 static void USART_init(void)
 {
-    VPORTC.DIR &= ~PIN1_bm;                                 /* set pin 1 of PORT C (RXd) as input*/
-    VPORTC.DIR |= PIN0_bm;                                  /* set pin 0 of PORT C (TXd) as output*/
-    USART1.BAUD = (uint16_t)(USART1_BAUD_RATE(9600));       /* set the baud rate*/
-    USART1.CTRLC = USART_CHSIZE0_bm | USART_CHSIZE1_bm;     /* set the data format to 8-bit*/
-    USART1.CTRLB |= (USART_TXEN_bm | USART_RXEN_bm);        /* enable transmitter*/
+    VPORTC.DIR &= ~PIN1_bm;                                 /* set pin 1 of PORT C (RXd) as input*/
+
+    VPORTC.DIR |= PIN0_bm;                                  /* set pin 0 of PORT C (TXd) as output*/
+
+    USART1.BAUD = (uint16_t)(USART1_BAUD_RATE(9600));       /* set the baud rate*/
+
+    USART1.CTRLC = USART_CHSIZE0_bm | USART_CHSIZE1_bm;     /* set the data format to 8-bit*/
+
+    USART1.CTRLB |= (USART_TXEN_bm | USART_RXEN_bm);        /* enable transmitter*/
+
  }
 
 static uint8_t USART_read(void)
